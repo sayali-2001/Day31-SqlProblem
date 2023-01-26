@@ -1,0 +1,112 @@
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| payroll_service    |
+| performance_schema |
+| sayalidb1          |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> USE payroll_service;
+Database changed
+mysql> SELECT DATABASE();
++-----------------+
+| DATABASE()      |
++-----------------+
+| payroll_service |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> DESCRIBE emp_payroll;
++--------+--------------+------+-----+---------+----------------+
+| Field  | Type         | Null | Key | Default | Extra          |
++--------+--------------+------+-----+---------+----------------+
+| id     | int unsigned | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(150) | NO   |     | NULL    |                |
+| salary | double       | NO   |     | NULL    |                |
+| start  | date         | NO   |     | NULL    |                |
++--------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO emp_payroll(name, salary, start) VALUES ('Bill', 10000, '2018-01-03'),
+    -> ('Mark', 20000, '2019-11-13' ),
+    -> ('Charlie', 30000, '2020-05-21');
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM emp_payroll;
++----+---------+--------+------------+
+| id | name    | salary | start      |
++----+---------+--------+------------+
+|  1 | Bill    |  10000 | 2018-01-03 |
+|  2 | Mark    |  20000 | 2019-11-13 |
+|  3 | Charlie |  30000 | 2020-05-21 |
++----+---------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT salary FROM emp_payroll WHERE name = 'Bill';
++--------+
+| salary |
++--------+
+|  10000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> DELETE FROM emp_payroll WHERE name = 'Bill';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM emp_payroll;
++----+---------+--------+------------+
+| id | name    | salary | start      |
++----+---------+--------+------------+
+|  2 | Mark    |  20000 | 2019-11-13 |
+|  3 | Charlie |  30000 | 2020-05-21 |
++----+---------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO emp_payroll (name , salary, start) VALUES ('Bill', 10000, '2018-01-03');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DESCRIBE emp_payroll;
++--------+--------------+------+-----+---------+----------------+
+| Field  | Type         | Null | Key | Default | Extra          |
++--------+--------------+------+-----+---------+----------------+
+| id     | int unsigned | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(150) | NO   |     | NULL    |                |
+| salary | double       | NO   |     | NULL    |                |
+| start  | date         | NO   |     | NULL    |                |
++--------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM emp_payroll;
++----+---------+--------+------------+
+| id | name    | salary | start      |
++----+---------+--------+------------+
+|  2 | Mark    |  20000 | 2019-11-13 |
+|  3 | Charlie |  30000 | 2020-05-21 |
+|  4 | Bill    |  10000 | 2018-01-03 |
++----+---------+--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM emp_payroll WHERE start BETWEEN CAST ('2018-01-01' AS DATE) AND DATE (NOW());
+ERROR 1584 (42000): Incorrect parameters in the call to stored function `CAST`
+mysql> ALTER TABLE emp_payroll ADD gender CHAR(1) AFTER name;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM emp_payroll;
++----+---------+--------+--------+------------+
+| id | name    | gender | salary | start      |
++----+---------+--------+--------+------------+
+|  2 | Mark    | NULL   |  20000 | 2019-11-13 |
+|  3 | Charlie | NULL   |  30000 | 2020-05-21 |
+|  4 | Bill    | NULL   |  10000 | 2018-01-03 |
++----+---------+--------+--------+------------+
+3 rows in set (0.00 sec)
